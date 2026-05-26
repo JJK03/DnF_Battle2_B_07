@@ -17,3 +17,4 @@ graph TD
     UC_몬스터공격 -.->|&lt;&lt;include&gt;&gt;| UC_플레이어체크
     UC_길드가입 -.->|&lt;&lt;include&gt;&gt;| UC_플레이어체크
     UC_아이템획득 -.->|&lt;&lt;include&gt;&gt;| UC_플레이어체크
+```

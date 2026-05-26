@@ -14,10 +14,10 @@ classDiagram
     }
 
     class 전투 {
-        +캐릭터생성(플레이어id: String, 캐릭터명: String, 직업: String, 레벨: int) void
-        +몬스터공격(플레이어id: String) void
-        +아이템획득() void
-        +길드가입() void
+        +캐릭터생성(플레이어id: String, 캐릭터명: String, 직업: String, 레벨: int) String
+        +몬스터공격(플레이어id: String) String
+        +아이템획득(플레이어id: String, 아이템명: String, 가치: int) String
+        +길드가입(플레이어id: String, 길드명: String) String
     }
 
     class 플레이어 {
@@ -69,6 +69,7 @@ classDiagram
     Join_Guild_UI ..> 전투 : 사용
     전투 ..> 플레이어 : 검증 요청
     전투 --> 캐릭터 : 관리
+    플레이어 "1" --> "0..*" 캐릭터 : 보유
 
     캐릭터 <|-- 전사
     캐릭터 <|-- 마법사
@@ -78,3 +79,4 @@ classDiagram
     인벤토리 "1" *-- "0..*" 아이템 : 포함
     
     길드 "1" o-- "0..*" 캐릭터 : 길드원
+```

@@ -15,20 +15,26 @@ sequenceDiagram
     rect rgb(240, 240, 240)
         Note over Battle, P_Class: [Include] 플레이어 검증 수행
         Battle->>P_Class: 플레이어체크(플레이어id)
-        P_Class-->>Battle: boolean (true)
+        P_Class-->>Battle: boolean
     end
 
-    alt 직업 == 전사
-        Battle->>Char: 전사 객체 생성 (-캐릭터명, -레벨, -HP, -공격력)
-    else 직업 == 마법사
-        Battle->>Char: 마법사 객체 생성 (-캐릭터명, -레벨, -HP, -공격력)
-    end
-    
-    %% 클래스 다이어그램의 Composition 관계 반영
-    Note over Char, Inv: [Composition] 캐릭터 생성 시 인벤토리 동시 생성
-    Char->>Inv: 인벤토리 객체 생성 (-최대용량=10 설정)
-    Inv-->>Char: 생성 완료
+    alt 플레이어 검증 성공
+        alt 직업 == 전사
+            Battle->>Char: 전사 객체 생성 (-캐릭터명, -레벨, -HP, -공격력)
+        else 직업 == 마법사
+            Battle->>Char: 마법사 객체 생성 (-캐릭터명, -레벨, -HP, -공격력)
+        end
 
-    Char-->>Battle: 생성 완료 (인벤토리 포함)
-    Battle-->>UI: void
-    UI-->>Player: 캐릭터 생성 결과 출력 (JSP)
+        %% 클래스 다이어그램의 Composition 관계 반영
+        Note over Char, Inv: [Composition] 캐릭터 생성 시 인벤토리 동시 생성
+        Char->>Inv: 인벤토리 객체 생성 (-최대용량=10 설정)
+        Inv-->>Char: 생성 완료
+
+        Char-->>Battle: 생성 완료 (인벤토리 포함)
+        Battle-->>UI: 생성 결과
+        UI-->>Player: 캐릭터 생성 결과 출력 (JSP)
+    else 플레이어 검증 실패
+        Battle-->>UI: 오류 결과
+        UI-->>Player: "플레이어 검증 실패" 에러 출력 (JSP)
+    end
+```

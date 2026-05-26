@@ -14,19 +14,25 @@ sequenceDiagram
     rect rgb(240, 240, 240)
         Note over Battle, P_Class: [Include] 플레이어 검증 수행
         Battle->>P_Class: 플레이어체크(플레이어id)
-        P_Class-->>Battle: boolean (true)
+        P_Class-->>Battle: boolean
     end
 
-    %% 직업별 고유 스킬 발동
-    alt 직업 == 전사
-        Battle->>Char: 스킬발동()
-        Char-->>Battle: int (공격력 * 1.5)
-    else 직업 == 마법사
-        Battle->>Char: 스킬발동()
-        Char-->>Battle: int (공격력 * 2.0)
+    alt 플레이어 검증 성공
+        %% 직업별 고유 스킬 발동
+        alt 직업 == 전사
+            Battle->>Char: 스킬발동()
+            Char-->>Battle: int (공격력 * 1.5)
+        else 직업 == 마법사
+            Battle->>Char: 스킬발동()
+            Char-->>Battle: int (공격력 * 2.0)
+        end
+
+        Note over Battle: [데미지 결과 등급 부여]<br/>200 이상: S급 / 100 이상: A급 / 100 미만: B급
+
+        Battle-->>UI: 공격 결과
+        UI-->>Player: 최종 스킬명, 데미지, 등급 출력 (JSP)
+    else 플레이어 검증 실패
+        Battle-->>UI: 오류 결과
+        UI-->>Player: "플레이어 검증 실패" 에러 출력 (JSP)
     end
-    
-    Note over Battle: [데미지 결과 등급 부여]<br/>200 이상: S급 / 100 이상: A급 / 100 미만: B급
-    
-    Battle-->>UI: void
-    UI-->>Player: 최종 스킬명, 데미지, 등급 출력 (JSP)
+```
